@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+#include "client.h"
 #include "../server/server.h"
 
 void* server_thread(void* arg) {
@@ -20,8 +21,8 @@ int main() {
         return -1;
     }
 
-    printf("client ready\n");
-    
+    run_client();
+
     pthread_join(tid, NULL);
 
     return 0;

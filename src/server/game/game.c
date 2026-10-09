@@ -63,6 +63,7 @@ void create_game(struct GameState *state) {
     state->health = 21;
     state->skip_token = true;
     state->shield_equipped = false;
+    state->discard_deck_size = 0;
     for (int i = 0;i < MAX_ROOM_SIZE;i++) {
         state->room_state[i] = false;
     }
