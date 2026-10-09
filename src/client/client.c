@@ -1,6 +1,7 @@
 #include "client.h"
 #include "../common/connection/connection.h"
 #include "../common/game/game.h"
+#include "render/render.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,7 +44,7 @@ int run_client() {
 
     if (write(fd, "hello!", 7) > 0) {
         if (recv(fd, &state, sizeof(struct ClientGameState), MSG_WAITALL) == sizeof(struct ClientGameState))
-            print_client_state(&state);
+            render_game(&state);
     }
 
     close(fd);
