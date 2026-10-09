@@ -23,6 +23,7 @@ struct MessageGameState {
     
     struct Card room[MAX_ROOM_SIZE];
     bool room_state[MAX_ROOM_SIZE];
+    int active_cards;
     
     struct Card discard_deck[DECK_SIZE];
     int discard_deck_size;
@@ -34,7 +35,7 @@ struct MessageGameState {
 };
 
 struct PlayerInteraction {
-    int room_position;
+    int selected_card;
 };
 
 void print_card(struct Card *card);

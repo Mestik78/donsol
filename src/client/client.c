@@ -1,7 +1,6 @@
 #include "client.h"
 #include "../common/connection/connection.h"
-#include "../common/game/game.h"
-#include "render/render.h"
+#include "game/game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,17 +46,15 @@ int run_client() {
     do {
         struct MessageGameState message_state;
         if (recv(fd, &message_state, sizeof(struct MessageGameState), MSG_WAITALL) != sizeof(struct MessageGameState)) {
-            perror("recv");
+            perror("recv\n");
             return -1;
         }
 
         message_to_client_game_state(&message_state, &state);
-        render_game(&state);
 
         struct PlayerInteraction interaction;
-        // TODO: procesar entrada
-        usleep(1000000);
 
+        play_round(&state, &interaction);
 
         write(fd, &interaction, sizeof(struct PlayerInteraction));
 

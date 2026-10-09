@@ -12,4 +12,6 @@ struct ClientGameState {
 void init_client_game(struct ClientGameState *state);
 void message_to_client_game_state(struct MessageGameState *message, struct ClientGameState *client);
 
+void play_round(struct ClientGameState *state, struct PlayerInteraction *interaction);
+
 #endif

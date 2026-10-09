@@ -72,10 +72,12 @@ int run_server() {
 
             // wait for interaction
             struct PlayerInteraction interaction;
-            if (recv(client_fd, &interaction, sizeof(struct PlayerInteraction), MSG_WAITALL) == sizeof(struct PlayerInteraction)) {
-                // process interaction
-                enter_room(&state);
+            if (recv(client_fd, &interaction, sizeof(struct PlayerInteraction), MSG_WAITALL) != sizeof(struct PlayerInteraction)) {
+                perror("recv\n");
+                return -1;
             }
+    
+            play_interaction(&state, &interaction);
 
         } while (!state.finished);
 

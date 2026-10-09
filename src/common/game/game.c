@@ -46,4 +46,5 @@ void init_message_game(struct MessageGameState *state) {
     for (int i = 0;i < MAX_ROOM_SIZE;i++) {
         state->room_state[i] = false;
     }
+    state->active_cards = 0;
 }

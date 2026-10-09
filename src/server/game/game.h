@@ -17,4 +17,6 @@ void print_server_state(struct ServerGameState *state);
 
 void server_to_message_game_state(struct ServerGameState *server, struct MessageGameState *message);
 
+void play_interaction(struct ServerGameState *state, struct PlayerInteraction *interaction);
+
 #endif

@@ -80,4 +80,12 @@ void enter_room(struct ServerGameState *state) {
         state->room[i] = state->deck[state->deck_size];
         state->room_state[i] = true;
     }
+    state->active_cards = MAX_ROOM_SIZE;
+}
+
+void play_interaction(struct ServerGameState *state, struct PlayerInteraction *interaction) {
+    state->room_state[interaction->selected_card] = false;
+    state->active_cards--;
+    if (!state->active_cards)
+        enter_room(state);
 }
