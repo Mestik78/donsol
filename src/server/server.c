@@ -8,13 +8,18 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <time.h>
 
 int run_server() {
     printf("server running!\n");
+    srand(time(NULL));
     
     // create game
     struct ServerGameState state;
     create_game(&state);
+    print_server_state(&state);
+
+    enter_room(&state);
     print_server_state(&state);
 
     // while (game not finished)

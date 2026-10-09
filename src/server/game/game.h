@@ -24,6 +24,7 @@ struct ServerGameState {
 };
 
 void create_game(struct ServerGameState *state);
+void enter_room(struct ServerGameState *state);
 
 void print_server_state(struct ServerGameState *state);
 

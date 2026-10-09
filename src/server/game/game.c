@@ -2,6 +2,7 @@
 #include "../../common/game/game.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 void print_server_state(struct ServerGameState *state) {
     printf("Deck:\n");
@@ -52,7 +53,15 @@ void create_deck(struct Card *deck) {
     deck[53].suit = SPADES;
     deck[53].value = 13;
 }
-struct Card shuffle_deck(struct Card deck, int deck_size);
+void shuffle_deck(struct Card *deck, int deck_size) {
+    for (int i = deck_size - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+
+        struct Card temp = deck[i];
+        deck[i] = deck[j];
+        deck[j] = temp;
+    }
+}
 
 void create_game(struct ServerGameState *state) {
     state->finished = false;
@@ -67,6 +76,8 @@ void create_game(struct ServerGameState *state) {
 
     create_deck(state->deck);
     state->deck_size = DECK_SIZE;
+    
+    shuffle_deck(state->deck, state->deck_size);
 }
 
 void server_to_client_game_state(struct ServerGameState *server, struct ClientGameState *client) {
@@ -77,10 +88,19 @@ void server_to_client_game_state(struct ServerGameState *server, struct ClientGa
     client->shield_equipped = server->shield_equipped;
     for (int i = 0;i < MAX_ROOM_SIZE;i++) {
         client->room_state[i] = server->room_state[i];
+        client->room[i] = server->room[i];
     }
     client->deck_size = server->deck_size;
     client->discard_deck_size = server->discard_deck_size;
     for (int i = 0; i < server->discard_deck_size; i++) {
         client->discard_deck[i] = server->discard_deck[i];
+    }
+}
+
+void enter_room(struct ServerGameState *state) {
+    for (int i = 0;i < MAX_ROOM_SIZE;i++) {
+        state->deck_size--;
+        state->room[i] = state->deck[state->deck_size];
+        state->room_state[i] = true;
     }
 }
