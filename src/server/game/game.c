@@ -65,13 +65,13 @@ void shuffle_deck(struct Card *deck, int deck_size) {
 }
 
 void init_server_game(struct ServerGameState *state) {
-    init_message_game((struct MessageGameState *)state);
+    init_common_game((struct CommonGameState *)state);
     create_deck(state->deck);
     shuffle_deck(state->deck, state->deck_size);
 }
 
-void server_to_message_game_state(struct ServerGameState *server, struct MessageGameState *message) {
-    memcpy(message, server, sizeof(struct MessageGameState));
+void server_to_common_game_state(struct ServerGameState *server, struct CommonGameState *message) {
+    memcpy(message, server, sizeof(struct CommonGameState));
 }
 
 void enter_room(struct ServerGameState *state) {

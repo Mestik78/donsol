@@ -5,7 +5,7 @@
 void print_card(struct Card *card) {
     printf("%s%s ", SuitIcons[card->suit], ValueNames[card->value]);
 }
-void print_client_state(struct MessageGameState *state) {
+void print_client_state(struct CommonGameState *state) {
     printf("Discard Deck:\n");
     for (int i = 0;i < state->discard_deck_size;i++) {
         print_card(&state->discard_deck[i]);
@@ -35,7 +35,7 @@ void print_client_state(struct MessageGameState *state) {
     printf("\n");
 }
 
-void init_message_game(struct MessageGameState *state) {
+void init_common_game(struct CommonGameState *state) {
     state->finished = false;
     state->round = 0;
     state->health = 21;

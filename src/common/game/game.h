@@ -15,7 +15,7 @@ struct Card {
     int value;
 };
 
-struct MessageGameState {
+struct CommonGameState {
     bool finished;
     int round;
 
@@ -39,8 +39,8 @@ struct PlayerInteraction {
 };
 
 void print_card(struct Card *card);
-void print_client_state(struct MessageGameState *state);
+void print_client_state(struct CommonGameState *state);
 
-void init_message_game(struct MessageGameState *state);
+void init_common_game(struct CommonGameState *state);
 
 #endif

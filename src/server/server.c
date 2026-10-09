@@ -66,8 +66,8 @@ int run_server() {
 
         do {  // same client
             // send current state
-            struct MessageGameState client_state;
-            server_to_message_game_state(&state, &client_state);
+            struct CommonGameState client_state;
+            server_to_common_game_state(&state, &client_state);
             write(client_fd, &client_state, sizeof(client_state));
 
             // wait for interaction

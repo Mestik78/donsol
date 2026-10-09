@@ -4,13 +4,13 @@
 #include "../../common/game/game.h"
 
 struct ClientGameState {
-    struct MessageGameState;
+    struct CommonGameState;
     
     int selected_card;
 };
 
 void init_client_game(struct ClientGameState *state);
-void message_to_client_game_state(struct MessageGameState *message, struct ClientGameState *client);
+void message_to_client_game_state(struct CommonGameState *message, struct ClientGameState *client);
 
 void play_round(struct ClientGameState *state, struct PlayerInteraction *interaction);
 

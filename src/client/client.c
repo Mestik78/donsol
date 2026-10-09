@@ -44,8 +44,8 @@ int run_client() {
 
     // get initial state
     do {
-        struct MessageGameState message_state;
-        if (recv(fd, &message_state, sizeof(struct MessageGameState), MSG_WAITALL) != sizeof(struct MessageGameState)) {
+        struct CommonGameState message_state;
+        if (recv(fd, &message_state, sizeof(struct CommonGameState), MSG_WAITALL) != sizeof(struct CommonGameState)) {
             perror("recv\n");
             return -1;
         }
