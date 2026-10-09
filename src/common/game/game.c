@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 void print_card(struct Card *card) {
-    printf("%s%s", SuitIcons[card->suit], ValueNames[card->value]);
+    printf("%s%s ", SuitIcons[card->suit], ValueNames[card->value]);
 }
-void print_client_state(struct ClientGameState *state) {
+void print_client_state(struct MessageGameState *state) {
     printf("Discard Deck:\n");
     for (int i = 0;i < state->discard_deck_size;i++) {
         print_card(&state->discard_deck[i]);
@@ -33,4 +33,17 @@ void print_client_state(struct ClientGameState *state) {
         printf(" ");
     }
     printf("\n");
+}
+
+void init_message_game(struct MessageGameState *state) {
+    state->finished = false;
+    state->round = 0;
+    state->health = 21;
+    state->skip_token = true;
+    state->shield_equipped = false;
+    state->deck_size = DECK_SIZE;
+    state->discard_deck_size = 0;
+    for (int i = 0;i < MAX_ROOM_SIZE;i++) {
+        state->room_state[i] = false;
+    }
 }

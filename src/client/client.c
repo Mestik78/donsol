@@ -14,7 +14,7 @@
 int run_client() {
     printf("client running!\n");
     struct ClientGameState state;
-
+    init_client_game(&state);
 
     int fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0) {
@@ -42,10 +42,26 @@ int run_client() {
         usleep(100000);
     printf("client connected to server\n");
 
-    if (write(fd, "hello!", 7) > 0) {
-        if (recv(fd, &state, sizeof(struct ClientGameState), MSG_WAITALL) == sizeof(struct ClientGameState))
-            render_game(&state);
-    }
+
+    // get initial state
+    do {
+        struct MessageGameState message_state;
+        if (recv(fd, &message_state, sizeof(struct MessageGameState), MSG_WAITALL) != sizeof(struct MessageGameState)) {
+            perror("recv");
+            return -1;
+        }
+
+        message_to_client_game_state(&message_state, &state);
+        render_game(&state);
+
+        struct PlayerInteraction interaction;
+        // TODO: procesar entrada
+        usleep(1000000);
+
+
+        write(fd, &interaction, sizeof(struct PlayerInteraction));
+
+    }while (!state.finished);
 
     close(fd);
     return 0;

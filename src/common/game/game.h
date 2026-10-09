@@ -7,15 +7,15 @@
 enum Suit {
     CLUBS, DIAMONDS, HEARTS, SPADES
 };
-static const char *SuitIcons[] = {"♣", "♦", "♥", "♠"};
-static const char *ValueNames[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "Joker"};
+static const char __attribute__((unused)) *SuitIcons[] = {"♣", "♦", "♥", "♠"};
+static const char __attribute__((unused)) *ValueNames[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "Joker"};
 
 struct Card {
     enum Suit suit;
     int value;
 };
 
-struct ClientGameState {
+struct MessageGameState {
     bool finished;
     int round;
 
@@ -33,7 +33,13 @@ struct ClientGameState {
     struct Card shield;
 };
 
+struct PlayerInteraction {
+    int room_position;
+};
+
 void print_card(struct Card *card);
-void print_client_state(struct ClientGameState *state);
+void print_client_state(struct MessageGameState *state);
+
+void init_message_game(struct MessageGameState *state);
 
 #endif

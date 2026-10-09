@@ -12,7 +12,12 @@ void render_game(struct ClientGameState *state) {
         else
             printf("-- ");
     }
+    printf("\n");
+    for (int i = 0;i < MAX_ROOM_SIZE;i++) {
+        if (state->selected_card == i)
+            printf("^  ");
+        else
+            printf("   ");
+    }
     printf("\n\n");
-
-    printf("> \n");
 }

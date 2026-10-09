@@ -16,18 +16,11 @@ int run_server() {
     
     // create game
     struct ServerGameState state;
-    create_game(&state);
+    init_server_game(&state);
     print_server_state(&state);
 
     enter_room(&state);
     print_server_state(&state);
-
-    // while (game not finished)
-    //while (!state.finished) {
-        //  game loop()
-    //    game_loop(&state);
-    //}
-
 
     // socket
     int fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -71,18 +64,20 @@ int run_server() {
         }
         printf("client connected\n");
 
-        while(1) {  // same client
-            char buffer[MSG_LENGTH];
-            int count = read(client_fd, buffer, sizeof(buffer)); // wait for message
-            if (count <= 0)
-                break;
-            printf("%s\n", buffer);
-
-
-            struct ClientGameState client_state;
-            server_to_client_game_state(&state, &client_state);
+        do {  // same client
+            // send current state
+            struct MessageGameState client_state;
+            server_to_message_game_state(&state, &client_state);
             write(client_fd, &client_state, sizeof(client_state));
-        }
+
+            // wait for interaction
+            struct PlayerInteraction interaction;
+            if (recv(client_fd, &interaction, sizeof(struct PlayerInteraction), MSG_WAITALL) == sizeof(struct PlayerInteraction)) {
+                // process interaction
+                enter_room(&state);
+            }
+
+        } while (!state.finished);
 
         close(client_fd);
         printf("client disconnected\n");

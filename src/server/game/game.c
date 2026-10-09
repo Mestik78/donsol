@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void print_server_state(struct ServerGameState *state) {
     printf("Deck:\n");
@@ -63,38 +64,14 @@ void shuffle_deck(struct Card *deck, int deck_size) {
     }
 }
 
-void create_game(struct ServerGameState *state) {
-    state->finished = false;
-    state->round = 0;
-    state->health = 21;
-    state->skip_token = true;
-    state->shield_equipped = false;
-    state->discard_deck_size = 0;
-    for (int i = 0;i < MAX_ROOM_SIZE;i++) {
-        state->room_state[i] = false;
-    }
-
+void init_server_game(struct ServerGameState *state) {
+    init_message_game((struct MessageGameState *)state);
     create_deck(state->deck);
-    state->deck_size = DECK_SIZE;
-    
     shuffle_deck(state->deck, state->deck_size);
 }
 
-void server_to_client_game_state(struct ServerGameState *server, struct ClientGameState *client) {
-    client->finished = server->finished;
-    client->round = server->round;
-    client->health = server->health;
-    client->skip_token = server->skip_token;
-    client->shield_equipped = server->shield_equipped;
-    for (int i = 0;i < MAX_ROOM_SIZE;i++) {
-        client->room_state[i] = server->room_state[i];
-        client->room[i] = server->room[i];
-    }
-    client->deck_size = server->deck_size;
-    client->discard_deck_size = server->discard_deck_size;
-    for (int i = 0; i < server->discard_deck_size; i++) {
-        client->discard_deck[i] = server->discard_deck[i];
-    }
+void server_to_message_game_state(struct ServerGameState *server, struct MessageGameState *message) {
+    memcpy(message, server, sizeof(struct MessageGameState));
 }
 
 void enter_room(struct ServerGameState *state) {

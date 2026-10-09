@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -Wall -Wextra -O3 -flto -march=native -Isrc -ffunction-sections -fdata-sections
+CFLAGS := -fms-extensions -Wall -Wextra -O3 -flto -march=native -Isrc -ffunction-sections -fdata-sections
 LDFLAGS := -pthread -flto -Wl,--gc-sections -Wl,-s
 
 SRC_DIR := src
