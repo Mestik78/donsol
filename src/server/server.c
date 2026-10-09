@@ -13,9 +13,9 @@ int run_server() {
     printf("server running!\n");
     
     // create game
-    struct GameState state;
+    struct ServerGameState state;
     create_game(&state);
-    print_state(&state);
+    print_server_state(&state);
 
     // while (game not finished)
     //while (!state.finished) {
@@ -72,6 +72,11 @@ int run_server() {
             if (count <= 0)
                 break;
             printf("%s\n", buffer);
+
+
+            struct ClientGameState client_state;
+            server_to_client_game_state(&state, &client_state);
+            write(client_fd, &client_state, sizeof(client_state));
         }
 
         close(client_fd);

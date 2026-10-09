@@ -1,5 +1,6 @@
 #include "client.h"
 #include "../common/connection/connection.h"
+#include "../common/game/game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +12,7 @@
 
 int run_client() {
     printf("client running!\n");
+    struct ClientGameState state;
 
 
     int fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -40,10 +42,8 @@ int run_client() {
     printf("client connected to server\n");
 
     if (write(fd, "hello!", 7) > 0) {
-        char buffer[MSG_LENGTH + 1];
-        memset(buffer, '\0', sizeof(buffer));
-        if (read(fd, buffer, sizeof(buffer)) > 0)
-            printf("%s", buffer);
+        if (recv(fd, &state, sizeof(struct ClientGameState), MSG_WAITALL) == sizeof(struct ClientGameState))
+            print_client_state(&state);
     }
 
     close(fd);

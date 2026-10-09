@@ -2,22 +2,9 @@
 #define GAME_H
 
 #include <stdbool.h>
+#include "../../common/game/game.h"
 
-#define DECK_SIZE       54
-#define MAX_ROOM_SIZE   4
-
-enum Suit {
-    CLUBS, DIAMONDS, HEARTS, SPADES
-};
-static const char *SuitIcons[] = {"♣", "♦", "♥", "♠"};
-static const char *ValueNames[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "Joker"};
-
-struct Card {
-    enum Suit suit;
-    int value;
-};
-
-struct GameState {
+struct ServerGameState {
     bool finished;
     int round;
 
@@ -36,10 +23,10 @@ struct GameState {
     struct Card shield;
 };
 
-void create_game(struct GameState *state);
+void create_game(struct ServerGameState *state);
 
-void print_state(struct GameState *state);
+void print_server_state(struct ServerGameState *state);
 
-void game_loop(struct GameState *state);
+void server_to_client_game_state(struct ServerGameState *server, struct ClientGameState *client);
 
 #endif

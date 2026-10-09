@@ -1,6 +1,6 @@
 CC := gcc
-CFLAGS := -Wall -Wextra -O2 -Isrc
-LDFLAGS := -pthread
+CFLAGS := -Wall -Wextra -O3 -flto -march=native -Isrc -ffunction-sections -fdata-sections
+LDFLAGS := -pthread -flto -Wl,--gc-sections -Wl,-s
 
 SRC_DIR := src
 OBJ_DIR := obj
@@ -10,10 +10,13 @@ CLIENT_TARGET := $(BIN_DIR)/donsol
 SERVER_TARGET := $(BIN_DIR)/donsol-server
 
 SERVER_SRCS := $(shell find $(SRC_DIR)/server -name '*.c')
-SERVER_OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SERVER_SRCS))
-
 SERVER_LIB_SRCS := $(filter-out $(SRC_DIR)/server/main.c, $(SERVER_SRCS))
-SERVER_LIB_OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SERVER_LIB_SRCS))
+
+COMMON_SRCS := $(shell find $(SRC_DIR)/common -name '*.c')
+COMMON_OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(COMMON_SRCS))
+
+SERVER_OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SERVER_SRCS)) $(COMMON_OBJS)
+SERVER_LIB_OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SERVER_LIB_SRCS)) $(COMMON_OBJS)
 
 CLIENT_ONLY_SRCS := $(shell find $(SRC_DIR)/client -name '*.c')
 CLIENT_ONLY_OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(CLIENT_ONLY_SRCS))
