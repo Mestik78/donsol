@@ -21,8 +21,16 @@ void print_state(struct GameState *state) {
     }
     printf("\n");
 
+    printf("Finished: %d\n", state->finished);
+    printf("Round: %d\n", state->round);
     printf("HP: %d\n", state->health);
     printf("Skip Token: %d\n", state->skip_token);
+    printf("Shield: ");
+    if (state->shield_equipped) {
+        print_card(&state->shield);
+        printf("\n");
+    } else
+        printf("none\n");
 
     printf("Room:\n");
     for (int i = 0;i < MAX_ROOM_SIZE;i++) {
@@ -51,9 +59,10 @@ struct Card shuffle_deck(struct Card deck, int deck_size);
 
 void create_game(struct GameState *state) {
     state->finished = false;
+    state->round = 0;
     state->health = 21;
     state->skip_token = true;
-    state->shield = NULL;
+    state->shield_equipped = false;
     for (int i = 0;i < MAX_ROOM_SIZE;i++) {
         state->room_state[i] = false;
     }

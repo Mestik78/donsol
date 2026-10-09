@@ -19,6 +19,7 @@ struct Card {
 
 struct GameState {
     bool finished;
+    int round;
 
     struct Card deck[DECK_SIZE];
     int deck_size;
@@ -29,9 +30,9 @@ struct GameState {
     struct Card discard_deck[DECK_SIZE];
     int discard_deck_size;
 
-    bool skip_token;
-    
     int health;
+    bool skip_token;
+    bool shield_equipped;
     struct Card shield;
 };
 
