@@ -1,5 +1,5 @@
 #include "server.h"
-#include "../game/game.h"
+#include "game/game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
