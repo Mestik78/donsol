@@ -13,17 +13,24 @@ enum Key read_input() {
     ch = getchar();
     enum Key result = KEY_OTHER;
 
-    if (ch == '\n')
-        result = KEY_ENTER;
+    switch (ch) {
+        case '\n': result = KEY_ENTER; break;
+        case ' ': result = KEY_ENTER; break;
 
-    else if (ch == '\033') {
-        getchar();
-        switch(getchar()) {
-            case 'A': result = KEY_UP; break;
-            case 'B': result = KEY_DOWN; break;
-            case 'C': result = KEY_RIGHT; break;
-            case 'D': result = KEY_LEFT; break;
-        }
+        case 'k': result = KEY_UP; break;
+        case 'j': result = KEY_DOWN; break;
+        case 'l': result = KEY_RIGHT; break;
+        case 'h': result = KEY_LEFT; break;
+
+        case '\033':
+            getchar();
+            switch(getchar()) {
+                case 'A': result = KEY_UP; break;
+                case 'B': result = KEY_DOWN; break;
+                case 'C': result = KEY_RIGHT; break;
+                case 'D': result = KEY_LEFT; break;
+            }
+            break;
     }
 
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);

@@ -49,7 +49,7 @@ void create_deck(struct Card *deck) {
             deck[suit*13+i].value = i;
         }
     }
-    deck[52].suit = HEARTS;
+    deck[52].suit = CLUBS;
     deck[52].value = 13;
     deck[53].suit = SPADES;
     deck[53].value = 13;
@@ -81,9 +81,47 @@ void enter_room(struct ServerGameState *state) {
         state->room_state[i] = true;
     }
     state->active_cards = MAX_ROOM_SIZE;
+    state->round++;
+}
+
+void heal(struct ServerGameState *state, int hp) {
+    state->health += hp;
+    if (state->health > 21)
+        state->health = 21;
+}
+
+void equip_shield(struct ServerGameState *state, struct Card *shield) {
+    if (ShieldValues[shield->value] < ShieldValues[state->shield.value])
+        return;
+
+    state->shield_equipped = true;
+    state->shield = *shield;
+}
+
+void fight(struct ServerGameState *state, struct Card *enemy) {
+    int attack = AttackValues[enemy->value];
+    int defense = ShieldValues[state->shield.value];
+    if (!state->shield_equipped) defense = 0;
+
+    int damage = attack - defense;
+    if (damage < 0) damage = 0;
+    
+    state->health -= damage;
+    if (attack >= defense) state->shield_equipped = false;
 }
 
 void play_interaction(struct ServerGameState *state, struct PlayerInteraction *interaction) {
+    if (!state->room_state[interaction->selected_card])
+        return;
+
+    struct Card *card = &state->room[interaction->selected_card];
+    if (card->suit == HEARTS)
+        heal(state, HealValues[card->value]);
+    else if (card->suit == DIAMONDS)
+        equip_shield(state, card);
+    else
+        fight(state, card);
+
     state->room_state[interaction->selected_card] = false;
     state->active_cards--;
     if (!state->active_cards)

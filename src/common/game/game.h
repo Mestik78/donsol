@@ -10,6 +10,10 @@ enum Suit {
 static const char __attribute__((unused)) *SuitIcons[] = {"♣", "♦", "♥", "♠"};
 static const char __attribute__((unused)) *ValueNames[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "Joker"};
 
+static const int HealValues[] = {11, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 11, 11};
+static const int ShieldValues[] = {11, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 11, 11};
+static const int AttackValues[] = {17, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 13, 15, 21};
+
 struct Card {
     enum Suit suit;
     int value;

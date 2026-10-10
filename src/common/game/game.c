@@ -3,7 +3,10 @@
 #include <stdio.h>
 
 void print_card(struct Card *card) {
-    printf("%s%s ", SuitIcons[card->suit], ValueNames[card->value]);
+    if (card == nullptr)
+        printf("-- ");
+    else
+        printf("%s%s ", SuitIcons[card->suit], ValueNames[card->value]);
 }
 void print_client_state(struct CommonGameState *state) {
     printf("Discard Deck:\n");
